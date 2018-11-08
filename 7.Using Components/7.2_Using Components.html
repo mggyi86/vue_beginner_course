@@ -1,0 +1,31 @@
+</html>
+<!DOCTYPE html>
+<html class="no-js">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>Hello Vue</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="index.css">
+    </head>
+    <body>
+        <div class="container">
+            <story></story>
+        </div>
+        <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+        <!-- <script src="index.js" async defer></script> -->
+        <script>
+            Vue.filter('snitch', function(hero){
+                return hero.secretId + ' is ' + hero.firstname + ' ' + hero.lastname + ' in real life!';
+            });
+            Vue.component('story', {
+                template: '<h1>My horse is amazing!</h1>'
+            });
+            new Vue({
+                el: '.container'
+            });
+        </script>
+    </body> 
+</html>

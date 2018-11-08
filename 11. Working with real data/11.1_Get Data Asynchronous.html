@@ -1,0 +1,63 @@
+</html>
+<!DOCTYPE html>
+<html class="no-js">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>Let's hear some stories!</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="index.css">
+    </head>
+    <body>
+        <div id="app">
+            <div class="container">
+                <ul class="list-group">
+                    <story v-for="story in stories" :story="story"></story>
+                </ul>
+                <pre>
+                    {{ $data }}
+                </pre>
+            </div>
+        </div>
+        <template id="template-story-raw">
+            <li class="list-group-item">
+                {{story.writer}} said "{{story.plot}}"
+                <span>{{story.upvotes}}</span>
+            </li>
+        </template>
+        <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+        <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+        <!-- <script src="index.js" async defer></script> -->
+        <script>
+            Vue.component('story', {
+                template: '#template-story-raw',
+                props: ['story']
+            });
+
+            var vm = new Vue({
+                el: '#app',
+                data: {
+                    stories: []
+                },
+                mounted: function() {
+                    $.get('http://localhost/apis/public/api/stories', function(data) {
+                        console.log(data);
+                        vm.stories = data;
+                    });
+                    // $.ajax({
+                    //     type: "GET",
+                    //     dataType: "json",
+                    //     crossDomain: true,
+                    //     url : "http://localhost:3000/api/stories",
+                    //     success: function(data) {
+                    //         vm.stories = data;
+                    //     }
+                    // });
+                }
+
+            });
+        </script>
+    </body> 
+</html>

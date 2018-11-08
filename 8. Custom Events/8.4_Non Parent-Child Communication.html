@@ -1,0 +1,102 @@
+</html>
+<!DOCTYPE html>
+<html class="no-js">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>Food Battle</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="index.css">
+    </head>
+    <body>
+        <div class="container text-center">
+            <p style="font-size: 140px;">
+                {{ votes.count }}
+            </p>
+            <button class="btn btn-danger" @click="reset">Reset votes</button>
+            <button class="btn btn-danger" @click="stop">Stop</button>
+            <hr>
+            <div class="row">
+                <food name="Cheeseburger"></food>
+                <food name="Double Bacon Burger"></food>
+                <food name="Rodeo Burger"></food>
+            </div>
+            <h1>Log:</h1>
+            <ul class="list-group">
+                <li v-for="log in votes.logs" class="list-group-item">{{log}}</li>
+            </ul>
+        <pre>
+            {{$data}}
+        </pre>
+        </div>
+        <template id="food">
+            <div class="text-center col-lg-4">
+                <p style="font-size: 40px;">
+                    {{ votes }}
+                </p>
+                <button class="btn btn-default" @click="vote">{{ name }}</button>
+            </div>
+        </template>
+        <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+        <!-- <script src="index.js" async defer></script> -->
+        <script>
+            var bus = new Vue();
+            Vue.component('food', {
+                template: '#food',
+                props: ['name'],
+                data: function() {
+                    return {
+                        votes: 0
+                    }
+                },
+                methods: {
+                    vote: function(event) {
+                        // console.log(event.originalTarget.firstChild.textContent);
+                        var food = event.originalTarget.firstChild.textContent;
+                        this.votes++;
+                        bus.$emit('voted', food);
+                    },
+                    reset: function() {
+                        this.votes = 0;
+                    }
+                },
+                created() {
+                    bus.$on('reset', this.reset);
+                }
+            })
+            new Vue({
+                el: '.container',
+                data: {
+                    votes: {
+                        count: 0,
+                        logs: []
+                    },
+                },
+                methods: {
+                    // vote: function(writer) {
+                    //     this.$emit('voted');
+                    // },
+                    countVote: function(food) {
+                        this.votes.count++;
+                        this.votes.logs.push(food + ' received a vote.')
+                    },
+                    reset: function() {
+                        this.votes = {
+                            count:0,
+                            logs:[]
+                        };
+                        bus.$emit('reset');
+                    },
+                    stop: function() {
+                        bus.$off();
+                    }
+                },
+                created() {
+                    bus.$on('voted', this.countVote);
+                }
+            });
+        </script>
+    </body> 
+</html>

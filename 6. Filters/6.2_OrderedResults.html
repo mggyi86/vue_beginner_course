@@ -1,0 +1,89 @@
+</html>
+<!DOCTYPE html>
+<html class="no-js">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>Famous Stories</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="index.css">
+    </head>
+    <body>
+        <div class="container">
+            <h1>Let's hear some stories!</h1>
+            <ul class="list-group">
+                <li v-for="story in orederedStories" class="list-group-item">
+                    {{story.writer}} said "{{story.plot}}" and upvoted {{story.upvotes}} times.
+                </li>
+            </ul>
+            <button @click="order=order* -1" class="btn btn-primary">
+                Reverse Order
+            </button>
+            <br><br>
+            <pre>
+                {{ $data }}
+            </pre>
+        </div>
+        <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+        <!-- <script src="index.js" async defer></script> -->
+        <script>
+            new Vue({
+                el: '.container',
+                data: {
+                    query: ' ',
+                    order: -1,
+                    stories: [
+                        {
+                            plot: "I crashed my car today!",
+                            writer: "Alex",
+                            upvotes: 28
+                        },
+                        {
+                            plot: "Yesterday, someone stole my bag!",
+                            writer: "John",
+                            upvotes: 8
+                        },
+                        {
+                            plot: "Someone ate my chocolate...",
+                            writer: "John",
+                            upvotes: 51
+                        },
+                        {
+                            plot: "I ate someone's chocolate!",
+                            writer: "Alex",
+                            upvotes: 74
+                        },
+                    ]
+                },
+                computed: {
+                    famous: function() {
+                        return this.stories.filter(function(item) {
+                            return item.upvotes > 25;
+                        });
+                    },
+                    search: function() {
+                        var query = this.query;
+                        return this.stories.filter(function (story) {
+                            return story.plot.includes(query);
+                        });
+                    },
+                    orederedStories: function() {
+                        var order = this.order;
+                        return this.stories.sort(function(a,b ) {
+                            return (a.upvotes - b.upvotes) * order;
+                        });
+                    }
+                },
+                methods: {
+                    storiesBy: function(writer) {
+                        return this.stories.filter(function(story) {
+                            return story.writer === writer;
+                        })
+                    },
+                }
+            });
+        </script>
+    </body> 
+</html>

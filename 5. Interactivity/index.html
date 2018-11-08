@@ -1,0 +1,90 @@
+</html>
+<!DOCTYPE html>
+<html class="no-js">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>Upvote</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="index.css">
+    </head>
+    <body>
+        <div class="container">
+            <h1>Enter 2 numbers to calculate their sum.</h1>
+            <form class="form-inline">
+                <input v-model.number="a" class="form-control">
+                <select v-model="operator" class="form-control">
+                    <option>+</option>
+                    <option>-</option>
+                    <option>*</option>
+                    <option>/</option>
+                </select>
+                <input v-model.number="b" class="form-control">
+            </form>
+            <h2>Result: {{a}} {{ operator }} {{b}} = {{c}}</h2>
+            <pre>
+                {{ $data }}
+            </pre>
+        </div>
+        <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+        <!-- <script src="index.js" async defer></script> -->
+        <script>
+            new Vue({
+                el: '.container',
+                data: {
+                    a: 1,
+                    b: 2,
+                    d: 1,
+                    operator: "+"
+                },
+                computed: {
+                    e: function() {
+                        return parseFloat(this.d) +1;
+                    },
+                    c: function() {
+                        switch (this.operator) {
+                            case "+":
+                                return this.a + this.b;
+                                break;
+
+                            case "-":
+                                return this.a - this.b;
+                                break;
+
+                            case "*":
+                                return this.a * this.b;
+                                break;
+
+                            case "/":
+                                return this.a / this.b;
+                                break;
+                        }
+                    }
+                },
+                methods: {
+                    calculate: function() {
+                        switch (this.operator) {
+                            case "+":
+                                this.c = this.a + this.b;
+                                break;
+
+                            case "-":
+                                this.c = this.a - this.b;
+                                break;
+
+                            case "*":
+                                this.c = this.a * this.b;
+                                break;
+
+                            case "/":
+                                this.c = this.a / this.b;
+                                break;
+                        }
+                    }
+                }
+            });
+        </script>
+    </body> 
+</html>

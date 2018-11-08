@@ -1,0 +1,122 @@
+</html>
+<!DOCTYPE html>
+<html class="no-js">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>Hello Vue</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="index.css">
+    </head>
+    <body>
+        <div id="app">
+            <div class="container">
+                <h1>Let's hear some stories!</h1>
+                    <ul class="list-group">
+                        <story v-for="story in stories" :story="story" :favorite="favorite" 
+                        @update="updateFavorite"></story>
+                    </ul>
+                <pre>
+                    {{ $data }}
+                </pre>
+            </div>
+        </div>
+        <template id="story-template">
+            <li class="list-group-item">
+                {{ story.writer }} said "{{ story.plot }}".
+                Story upvotes {{story.upvotes}}.
+                <button v-show="!story.voted" @click="upvote" class="btn btn-default">
+                    Upvote
+                </button>
+                <button v-show="!isFavorite" @click="updateFavorite" class="btn btn-primary">
+                    Favorite
+                </button>
+                <span v-show="isFavorite" class="glyphicon glyphicon-star pull-right" aria-hidden="true">
+                </span>
+            </li>
+        </template>
+        <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+        <!-- <script src="index.js" async defer></script> -->
+        <script>
+            Vue.component('story', {
+                props: ['story', 'favorite'],
+                template: '#story-template',
+                methods: {
+                    upvote: function() {
+                        this.story.upvotes +=1;
+                        this.story.voted=true;
+                    },
+                    setFavorite: function() {
+                        this.favorite = this.story;
+                    },
+                    updateFavorite: function() {
+                        this.$emit('update', this.story);
+                    }
+                },
+                computed: {
+                    isFavorite: function() {
+                        return this.story == this.favorite;
+                    } 
+                }
+            })
+            new Vue({
+                el: '#app',
+                data: {
+                    query: ' ',
+                    favorite: {},
+                    stories: [
+                        {
+                            plot: "I crashed my car today!",
+                            writer: "Alex",
+                            upvotes: 28,
+                            voted: false
+                        },
+                        {
+                            plot: "Yesterday, someone stole my bag!",
+                            writer: "John",
+                            upvotes: 8,
+                            voted: false
+                        },
+                        {
+                            plot: "Someone ate my chocolate...",
+                            writer: "John",
+                            upvotes: 51,
+                            voted: false
+                        },
+                        {
+                            plot: "I ate someone's chocolate!",
+                            writer: "Alex",
+                            upvotes: 74,
+                            voted: false
+                        },
+                    ]
+                },
+                computed: {
+                    famous: function() {
+                        return this.stories.filter(function(item) {
+                            return item.upvotes > 25;
+                        });
+                    },
+                    search: function() {
+                        var query = this.query;
+                        return this.stories.filter(function (story) {
+                            return story.plot.includes(query);
+                        });
+                    }
+                },
+                methods: {
+                    storiesBy: function(writer) {
+                        return this.stories.filter(function(story) {
+                            return story.writer === writer;
+                        })
+                    },
+                    updateFavorite: function(story) {
+                        this.favorite=story;
+                    }
+                }
+            });
+        </script>
+    </body> 
+</html>

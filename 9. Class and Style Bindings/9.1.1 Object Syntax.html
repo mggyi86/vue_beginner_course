@@ -1,0 +1,60 @@
+</html>
+<!DOCTYPE html>
+<html class="no-js">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>Hello Vue</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="index.css">
+        <style>
+            .red {
+                background: #ff0000;
+            }
+            .blue {
+                background: #0000ff;
+            }
+            .purple {
+                background: #7B1FA2;
+            }
+            .green {
+                background: #4CAF50;
+            }
+            .box {
+                float: left;
+                width: 200px;
+                height: 200px;
+                margin: 40px;
+                border: 1px solid rgba(0, 0, 0, .2);
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container text-center">
+            <div class="box" v-bind:class="{'red': color, 'blue': !color}"></div>
+            <div class="box" v-bind:class="{'purple': color, 'green': !color}"></div>
+            <div class="box" v-bind:class="{'red': color, 'blue': !color}"></div>
+            <div class="box" v-bind:class="{'purple': color, 'green': !color}"></div>
+            <button @click="flipColor" class="btn btn-block btn-success">
+                Flip color!
+            </button>
+        </div>
+        <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+        <!-- <script src="index.js" async defer></script> -->
+        <script>
+            new Vue({
+                el: '.container',
+                data: {
+                    color: true,
+                },
+                methods: {
+                    flipColor: function() {
+                        this.color = !this.color;
+                    }
+                }
+            });
+        </script>
+    </body> 
+</html>

@@ -1,0 +1,92 @@
+</html>
+<!DOCTYPE html>
+<html class="no-js">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>Let's hear some stories!</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="index.css">
+    </head>
+    <body>
+        <div id="app">
+            <!-- <pre>{{$data}}</pre> -->
+            <div class="pagination">
+                <button class="btn btn-default" @click="fetchStories(pagination.prev_page_url)" 
+                :disabled="!pagination.prev_page_url">
+                    Previous
+                </button>
+                <span>Page {{pagination.current_page}} of {{pagination.last_page}}</span>
+                <button class="btn btn-default" @click="fetchStories(pagination.next_page_url)" 
+                :disabled="!pagination.next_page_url">
+                    Next
+                </button>
+            </div>
+            <table class="table table-striped">
+                <tr>
+                    <th>#</th>
+                    <th>Plot</th>
+                    <th>Writer</th>
+                    <th>Upvotes</th>
+                    <th>Actions</th>
+                </tr>
+                <tr v-for="story in stories" @cancel="cancelStory" is="story" :story="story"></tr>
+            </table>
+            <p class="lead">Here's a list of all your stories</p>
+            <button @click="createStory" class="btn btn-primary">
+                Add a new one?
+            </button>
+            <hr>
+            <pre>{{ $data }}</pre>
+        </div>
+        <template id="template-story-raw">
+            <tr>
+                <td>
+                    {{story.id}}
+                </td>
+                <td>
+                    <input v-if="story.editing" v-model="story.plot" class="form-control">
+                    <span v-else>{{story.plot}}</span>
+                </td>
+                <td>
+                    <input v-if="story.editing" v-model="story.writer" class="form-control">
+                    <span v-else>{{story.writer}}</span>
+                </td>
+                <td>
+                    {{story.upvotes}}
+                </td>
+                <td>
+                    <div v-if="!story.editing" class="btn-group">
+                        <button @click="upvoteStory(story)" class="btn btn-primary">
+                            Upvote
+                        </button>
+                        <button @click="editStory(story)" class="btn btn-default">
+                            Edit
+                        </button>
+                        <button @click="deleteStory(story)" class="btn btn-danger">
+                            Delete
+                        </button>
+                    </div>
+                    <div v-else class="btn-groupe">
+                        <button v-if="story.id" @click="updateStory(story)" class="btn btn-primary">
+                            Update Story
+                        </button>
+                        <button v-else @click="storeStory(story)" class="btn btn-success">
+                            Save New Story
+                        </button>
+                        <button @click="cancelStory(story)" class="btn btn-default">
+                            Cancel
+                        </button>
+                    </div>
+                </td>
+            </tr>
+        </template>
+        <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/vue-resource/1.0.3/vue-resource.js"></script>
+        <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+        <!-- <script src="index.js" async defer></script> -->
+        <script src="js/app.js"></script>
+    </body> 
+</html>

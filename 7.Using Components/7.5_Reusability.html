@@ -1,0 +1,109 @@
+</html>
+<!DOCTYPE html>
+<html class="no-js">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>User Stories</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="index.css">
+    </head>
+    <body>
+        <div class="container">
+            <h1>Let's hear some stories!</h1>
+            <div>
+                <h3>Alex's stories</h3>
+                <ul class="list-group">
+                    <story v-for="story in storiesBy('Alex')" :story="story"></story>
+                </ul>
+                <h3>John's stories</h3>
+                <ul class="list-group">
+                        <story v-for="story in storiesBy('John')" :story="story"></story>
+                </ul>
+                <h1>Let's hear some famous stories! ({{famous.length}})</h1>
+                <ul class="list-group">
+                    <li v-for="story in famous" class="list-group-item">
+                        {{story.writer}} said "{{story.plot}}" and upvoted 
+                        {{story.upvotes}} times.
+                    </li>
+                </ul>
+                <div class="form-group">
+                    <label for="query">
+                        What are you looking for?
+                    </label>
+                    <input v-model="query" class="form-control">
+                </div>
+                <h3>Search results:</h3>
+                <ul class="list-group">
+                    <story v-for="story in search" :story="story"></story>
+                </ul>
+            </div>
+            <pre>
+                {{ $data }}
+            </pre>
+        </div>
+        <template id="story-template">
+            <li class="list-group-item">
+                {{ story.writer }} said "{{ story.plot }}"
+            </li>
+        </template>
+        <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+        <!-- <script src="index.js" async defer></script> -->
+        <script>
+            Vue.component('story', {
+                props: ['story'],
+                template: '#story-template'
+            })
+            new Vue({
+                el: '.container',
+                data: {
+                    query: ' ',
+                    stories: [
+                        {
+                            plot: "I crashed my car today!",
+                            writer: "Alex",
+                            upvotes: 28
+                        },
+                        {
+                            plot: "Yesterday, someone stole my bag!",
+                            writer: "John",
+                            upvotes: 8
+                        },
+                        {
+                            plot: "Someone ate my chocolate...",
+                            writer: "John",
+                            upvotes: 51
+                        },
+                        {
+                            plot: "I ate someone's chocolate!",
+                            writer: "Alex",
+                            upvotes: 74
+                        },
+                    ]
+                },
+                computed: {
+                    famous: function() {
+                        return this.stories.filter(function(item) {
+                            return item.upvotes > 25;
+                        });
+                    },
+                    search: function() {
+                        var query = this.query;
+                        return this.stories.filter(function (story) {
+                            return story.plot.includes(query);
+                        });
+                    }
+                },
+                methods: {
+                    storiesBy: function(writer) {
+                        return this.stories.filter(function(story) {
+                            return story.writer === writer;
+                        })
+                    },
+                }
+            });
+        </script>
+    </body> 
+</html>

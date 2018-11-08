@@ -1,0 +1,108 @@
+</html>
+<!DOCTYPE html>
+<html class="no-js">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>Let's hear some stories!</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="index.css">
+    </head>
+    <body>
+        <div id="app">
+            <table class="table table-striped">
+                <tr>
+                    <th>#</th>
+                    <th>Plot</th>
+                    <th>Writer</th>
+                    <th>Upvotes</th>
+                    <th>Actions</th>
+                </tr>
+                <tr v-for="story in stories" is="story" :story="story"></tr>
+            </table>
+            <p class="lead">Here's a list of all your stories</p>
+            <pre>{{ $data }}</pre>
+        </div>
+        <template id="template-story-raw">
+            <tr>
+                <td>
+                    {{story.id}}
+                </td>
+                <td>
+                    <span>{{story.plot}}</span>
+                </td>
+                <td>
+                    <span>{{story.writer}}</span>
+                </td>
+                <td>
+                    {{story.upvotes}}
+                </td>
+                <td>
+                    <div class="btn-group">
+                        <button @click="upvoteStory(story)" class="btn btn-primary">
+                            Upvote
+                        </button>
+                    </div>
+                </td>
+            </tr>
+        </template>
+        <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/vue-resource/1.0.3/vue-resource.js"></script>
+        <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+        <!-- <script src="index.js" async defer></script> -->
+        <script>
+            Vue.component('story', {
+                template: '#template-story-raw',
+                props: ['story'],
+                methods: {
+                    upvoteStory: function(story) {
+                        story.upvotes++;
+                        // $.ajax({
+                        //     url: 'http://api.com/api/stories/'+story.id,
+                        //     type: 'PUT',
+                        //     // crossDomain: true,
+                        //     datatype: 'application/json',
+                        //     data: story,
+                        //     success: function(data) {
+                        //         console.log(data);
+                        //     }
+                        // });
+                        this.$http.patch('http://localhost/apis/public/api/stories/'+story.id , story)
+                        .then(function (response) {
+                            console.log(response);
+                        })
+                    }
+                }
+            });
+
+            var vm = new Vue({
+                el: '#app',
+                data: {
+                    stories: []
+                },
+                mounted: function() {
+                    this.$http({url: 'http://localhost/apis/public/api/stories', method: 'GET'})
+                        .then(function(response) {
+                            Vue.set(vm, 'stories', response.data);
+                        });
+                    // $.get('http://api.com/api/stories', function(data) {
+                    //     console.log(data);
+                    //     vm.stories = data;
+                    // });
+                    // $.ajax({
+                    //     type: "GET",
+                    //     dataType: "json",
+                    //     crossDomain: true,
+                    //     url : "http://localhost:3000/api/stories",
+                    //     success: function(data) {
+                    //         vm.stories = data;
+                    //     }
+                    // });
+                }
+
+            });
+        </script>
+    </body> 
+</html>

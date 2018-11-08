@@ -1,0 +1,41 @@
+</html>
+<!DOCTYPE html>
+<html class="no-js">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>Stories</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="index.css">
+    </head>
+    <body>
+        <div class="container">
+            <h1>Let's hear some stories!</h1>
+            <ul class="list-group">
+                <li v-for="(value, key, index) in story" class="list-group-item">
+                    {{index}} : {{key}} : {{value}}
+                </li>
+            </ul>
+            <pre>
+                {{ $data }}
+            </pre>
+        </div>
+        <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+        <!-- <script src="index.js" async defer></script> -->
+        <script>
+            new Vue({
+                el: '.container',
+                data: {
+                    message: 'Our king is dead! Send help!',
+                    story: {
+                        plot: "Someone ate my chocolate...",
+                        writer: 'John',
+                        upvotes: 47
+                    }
+                }
+            });
+        </script>
+    </body> 
+</html>

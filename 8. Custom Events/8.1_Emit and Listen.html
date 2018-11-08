@@ -1,0 +1,60 @@
+</html>
+<!DOCTYPE html>
+<html class="no-js">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>Emit and Listen</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="index.css">
+    </head>
+    <body>
+        <div class="container text-center">
+            <p style="font-size: 140px;">
+                {{votes}}
+            </p>
+            <!-- <button class="btn btn-primary" @click="vote">Vote</button> -->
+            <food @voted="countVote" name="Cheeseburger"></food>
+        <pre>
+            {{$data}}
+        </pre>
+        </div>
+        <template id="food">
+            <button class="btn btn-default" @click="vote">{{name}}</button>
+        </template>
+        <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+        <!-- <script src="index.js" async defer></script> -->
+        <script>
+            Vue.component('food', {
+                template: '#food',
+                props: ['name'],
+                methods: {
+                    vote: function() {
+                        this.$emit('voted');
+                    }
+                }
+            });
+            new Vue({
+                el: '.container',
+                data: {
+                    votes: 0
+                },
+                methods: {
+                    vote: function(writer) {
+                        this.$emit('voted');
+                    },
+                    countVote: function() {
+                        this.votes++;
+                    }
+                },
+                created() {
+                    this.$on('voted', function(button) {
+                        this.votes++;
+                    });
+                }
+            });
+        </script>
+    </body> 
+</html>
